@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
     <title>jQuery</title>
-    <link rel="stylesheet" href="../../common/css/reset.css">
-    <link rel="stylesheet" href="../../common/css/base.css">
+    <link rel="stylesheet" href="./common/css/reset.css">
+    <link rel="stylesheet" href="./common/css/base.css">
     <link rel="stylesheet" href="./css/style.css">
   </head>
   <body>
@@ -25,7 +25,8 @@
       //   url: './data.json'
       // })
       // .done(function(data) {
-      //   console.log(data);
+      //   var result = data;
+      //   console.log(result);
       // });
       //
       // 今回の場合は同じ階層にあるdata.jsonに対してリクエストを飛ばして、中にあるオブジェクトを取得します。
@@ -37,9 +38,14 @@
       // そのため、次の行でconsole.log(data)をすると中身のオブジェクトが確認できます。
       //
       // [テンプレート]
-      // <li class="colorList__item">
-      //   <p class="colorList__title" style="background-color: ;"></p>
-      // </li>
+
+
+      <li class="colorList__item">
+        <p class="colorList__title" style="background-color">hello</p>
+      </li>
+
+
+
       //
       // このテンプレートに取得してきた中身を入れて表示します。
     </script>
