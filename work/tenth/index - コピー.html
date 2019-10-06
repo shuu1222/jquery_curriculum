@@ -138,20 +138,20 @@
       //
       // ここから追加機能（JavaScript遊び）
 
-      const btn = document.getElementById('#js-search-button');
-      const speech = new webkitSpeechRecognition();
-      speech.lang = 'ja-JP';
+      // const btn = document.getElementById('#js-search-button');
+      // const speech = new webkitSpeechRecognition();
+      // speech.lang = 'ja-JP';
 
-      btn.addEventListener('DOMContentLoaded' , 'click', () => {
-        // console.log('button clicked!');
-        btn.disabled = true;
-        speech.start();
-      });
+      // btn.addEventListener('DOMContentLoaded' , 'click', () => {
+      //   // console.log('button clicked!');
+      //   btn.disabled = true;
+      //   speech.start();
+      // });
 
-      speech.onresult = (e) => {
-        console.log(e);
-        speech.stop();
-      }
+      // speech.onresult = (e) => {
+      //   console.log(e);
+      //   speech.stop();
+      // }
 
       // ブックマーク　→　https://qiita.com/mi-miya/items/91490004f1376c790d80
     </script>
