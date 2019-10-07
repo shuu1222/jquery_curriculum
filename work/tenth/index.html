@@ -48,9 +48,34 @@
       // $.ajax({}) 外部ファイルやURLに対してデータをリクエストすることができます。
       // 以下は今回使う$.ajaxの基本的な形です。
       //
+      var page_num = 1;
+      $(function() {
+        $("#js-search-word").change(function() {
+          page_num = 0;
+        });
+      });
+      // 入力値を変更したときの処理（input内の内容に変更があったら処理実行）
+
       $(function() {
         $("#js-search-button").on("click", function() {
-          var search_word = $("#js-search-word").val(); //全ての要素のvalue属性を返す。 http://semooh.jp/jquery/api/attributes/val/val/
+          page_num++;
+        });
+      });
+      // 入力値を変えずに検索をクリックした際のページを変更
+
+      $(function() {
+        $("#js-search-button").on("click", function() {
+          if (page_num == 1) {
+            $("li").remove();
+          }
+        });
+      });
+      // 上の関数はボタンを押したときにpageが1ページ目の時は表示をリセットする処理
+
+      $(function() {
+        $("#js-search-button").on("click", function() {
+          var search_word = $("#js-search-word").val();
+          //全ての要素のvalue属性を返す。 http://semooh.jp/jquery/api/attributes/val/val/
           //検索キーワードにフォーム内のvalueを当ててあげるために
           // search_wordにフォーム内のvalueを代入する
           $.ajax({
@@ -64,8 +89,8 @@
               booksGenreId: "001",
               keyword: search_word, //検索キーワード
               hits: "20", //1ページあたりの取得件数
-              sort: "sales" //機能テスト
-              // page:1
+              sort: "sales", //機能テスト
+              page: page_num
             }
           }).done(function(data) {
             // この中にデータ取得後の動きを記述していきます。
@@ -73,8 +98,8 @@
             if (data.count > 0) {
               $.each(data.Items, function(index, value) {
                 //$( セレクタ ).each(function(インデックス, エレメント)　indexはiに省略可能　https://api.jquery.com/each/
-                console.log(index); //index数の確認
-                console.log(value.Item.title); //中身の確認 valueの中に Item/各要素　という階層になっている。
+                // console.log(index); //index数の確認
+                // console.log(value.Item.title); //中身の確認 valueの中に Item/各要素　という階層になっている。
 
                 var list = $(
                   "<li class='lists__item'>" +
@@ -112,12 +137,14 @@
               $(".lists").before('<div class="coment"></div>');
               coment = $(".coment");
               coment.html(
-                '<p class="message">検索結果が見つかりませんでした。</p>'
+                '<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索して下さい。</p>'
               );
             }
           });
         });
       });
+
+      // ページの処理
 
       //
       //
@@ -135,23 +162,6 @@
       // </li>
       //
       //
-      //
-      // ここから追加機能（JavaScript遊び）
-
-      const btn = document.getElementById('#js-search-button');
-      const speech = new webkitSpeechRecognition();
-      speech.lang = 'ja-JP';
-
-      btn.addEventListener('DOMContentLoaded' , 'click', () => {
-        // console.log('button clicked!');
-        btn.disabled = true;
-        speech.start();
-      });
-
-      speech.onresult = (e) => {
-        console.log(e);
-        speech.stop();
-      }
 
       // ブックマーク　→　https://qiita.com/mi-miya/items/91490004f1376c790d80
     </script>
