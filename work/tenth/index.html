@@ -1,13 +1,18 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="format-detection" content="telephone=no">
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
     <title>jQuery</title>
-    <link rel="stylesheet" href="../../common/css/reset.css">
-    <link rel="stylesheet" href="../../common/css/base.css">
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./common/css/reset.css" />
+    <link rel="stylesheet" href="./common/css/base.css" />
+    <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
     <div class="wrap">
@@ -17,7 +22,12 @@
         </div>
         <div class="search">
           <div class="search__text">
-            <input type="text" id="js-search-word" class="search__text__input" placeholder="検索する">
+            <input
+              type="text"
+              id="js-search-word"
+              class="search__text__input"
+              placeholder="検索する"
+            />
           </div>
           <button id="js-search-button" class="search__btn">検索する</button>
         </div>
@@ -38,19 +48,119 @@
       // $.ajax({}) 外部ファイルやURLに対してデータをリクエストすることができます。
       // 以下は今回使う$.ajaxの基本的な形です。
       //
-      // $.ajax({
-      //   url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
-      //   type: 'GET',
-      //   datatype: 'json',
-      //   data: {
-      //     // 「区分:サービス固有パラメーター」を確認して、必要な情報をdata内に入れましょう。
-      //     applicationId: '1019399324990976605', // (今回はこのIDを使用してください)
-      //     booksGenreId: '001'
-      //   },
-      // }).done(function(data) {
-      //   // この中にデータ取得後の動きを記述していきます。
-      //   console.log(data);
-      // });
+      var page_num = 1;
+      $(function() {
+        $("#js-search-word").change(function() {
+          page_num = 0;
+        });
+      });
+      // 入力値を変更したときの処理（input内の内容に変更があったら処理実行）
+
+      $(function() {
+        $("#js-search-button").on("click", function() {
+          page_num++;
+        });
+      });
+      // 入力値を変えずに検索をクリックした際のページを変更
+
+      $(function() {
+        $("#js-search-button").on("click", function() {
+          if (page_num == 1) {
+            $("li").remove();
+          }
+        });
+      });
+      // 上の関数はボタンを押したときにpageが1ページ目の時は表示をリセットする処理
+
+      $(function() {
+        $("#js-search-button").on("click", function() {
+          var search_word = $("#js-search-word").val();
+          //全ての要素のvalue属性を返す。 http://semooh.jp/jquery/api/attributes/val/val/
+          //検索キーワードにフォーム内のvalueを当ててあげるために
+          // search_wordにフォーム内のvalueを代入する
+          $.ajax({
+            url:
+              "https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522",
+            type: "GET",
+            datatype: "json",
+            data: {
+              // 「区分:サービス固有パラメーター」を確認して、必要な情報をdata内に入れましょう。
+              applicationId: "1019399324990976605", // (今回はこのIDを使用してください)
+              booksGenreId: "001",
+              keyword: search_word, //検索キーワード
+              hits: "20", //1ページあたりの取得件数
+              sort: "sales", //機能テスト
+              page: page_num
+            }
+          })
+            .done(function(data) {
+              // この中にデータ取得後の動きを記述していきます。
+              console.log(data);
+              if (data.count > 0) {
+                $.each(data.Items, function(index, value) {
+                  //$( セレクタ ).each(function(インデックス, エレメント)　indexはiに省略可能　https://api.jquery.com/each/
+                  // console.log(index); //index数の確認
+                  // console.log(value.Item.title); //中身の確認 valueの中に Item/各要素　という階層になっている。
+
+                  var list = $(
+                    "<li class='lists__item'>" +
+                    "<div class='lists__item__inner'>" +
+                    "<a href='" +
+                    value.Item.itemUrl +
+                    "'class='lists__item__link' target='_blank'>" +
+                    "<img src='" +
+                    value.Item.mediumImageUrl +
+                    "' class='lists__item__img' alt>" +
+                    "<p class='lists__item__detail'>作品名：　" +
+                    value.Item.title +
+                    "</p>" +
+                    "<p class='lists__item__detail'>価格　：　" +
+                    value.Item.itemPrice +
+                    "円" + //機能テスト
+                    "</p>" +
+                    "<p class='lists__item__detail'>作者　：　" +
+                    value.Item.author +
+                    "</p>" +
+                    "<p class='lists__item__detail'>出版社：　" +
+                    value.Item.publisherName +
+                    "</p>" +
+                    "<p class='lists__item__detail'>レビュー件数：　" +
+                    value.Item.reviewCount +
+                    " 件" + //機能テスト
+                      "</p>" +
+                      "</a>" +
+                      "</div>" +
+                      "</li>"
+                  );
+                  $("ul").prepend(list);
+                });
+              } else {
+                $(".lists").before('<div class="coment"></div>');
+                coment = $(".coment");
+                coment.html(
+                  '<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索して下さい。</p>'
+                );
+              }
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+              var err_num = jqXHR.status;
+              console.log(err_num);
+              if (jqXHR.status == 400) {
+                $(
+                  "<p>エラーです。1秒に1回以上検索ボタンを押さないでください。</p>"
+                )
+                  .insertAfter(".search__btn")
+                  .delay(3000)
+                  .fadeOut(function() {
+                    $(this).remove();
+                  });
+              }
+            });
+        });
+      });
+
+      // ページの処理
+
       //
       //
       // $.ajaxによってデータが取得できたら、必要なデータ(作品名とか作者名とか)を取得します。
@@ -67,7 +177,8 @@
       // </li>
       //
       //
-      //
+
+      // ブックマーク　→　https://qiita.com/mi-miya/items/91490004f1376c790d80
     </script>
   </body>
 </html>
