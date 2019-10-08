@@ -67,12 +67,10 @@
         $("#js-search-button").on("click", function() {
           if (page_num == 1) {
             $("li").remove();
-            $(".coment").remove();
           }
         });
       });
       // 上の関数はボタンを押したときにpageが1ページ目の時は表示をリセットする処理
-      // 検索結果がありませんについてもリセットする。
 
       $(function() {
         $("#js-search-button").on("click", function() {
@@ -116,20 +114,12 @@
                     "<p class='lists__item__detail'>作品名：　" +
                     value.Item.title +
                     "</p>" +
-                    "<p class='lists__item__detail'>価格　：　" +
-                    value.Item.itemPrice +
-                    "円" + //機能テスト
-                    "</p>" +
                     "<p class='lists__item__detail'>作者　：　" +
                     value.Item.author +
                     "</p>" +
                     "<p class='lists__item__detail'>出版社：　" +
                     value.Item.publisherName +
                     "</p>" +
-                    "<p class='lists__item__detail'>レビュー件数：　" +
-                    value.Item.reviewCount +
-                    " 件" + //機能テスト
-                      "</p>" +
                       "</a>" +
                       "</div>" +
                       "</li>"
@@ -144,35 +134,18 @@
                 );
               }
             })
-
-            // エラーはＡＰＩのエラーメッセージから引っ張ってくる。
-            // 下修正すること。
-
-
-
             .fail(function(jqXHR, textStatus, errorThrown) {
               var err_num = jqXHR.status;
               console.log(err_num);
-              if (jqXHR.status == 429) {
+              if (jqXHR.status == 400) {
                 $(
-                  "<p class='err_message'>エラーです。1秒に1回以上検索ボタンを押さないでください。</p>"
+                  "<p>エラーです。1秒に1回以上検索ボタンを押さないでください。</p>"
                 )
                   .insertAfter(".search__btn")
                   .delay(3000)
                   .fadeOut(function() {
                     $(this).remove();
                   });
-              }if (jqXHR.status == 400) {
-                $(
-                  "<p class='err_message'>各検索キーワードは半角2文字 もしくは 全角1文字 以上で指定する必要があります。<br>各検索キーワードがひらがな・カタカナ・記号の場合は2文字以上で指定する必要があります。</p>"
-                )
-                  .insertAfter(".search__btn")
-                  .delay(3000)
-                  .fadeOut(function() {
-                    $(this).remove();
-                  });
-              } else {
-                
               }
             });
         });
@@ -201,3 +174,7 @@
     </script>
   </body>
 </html>
+
+
+<!--  逆順の処理、get reverse はいらない　eachの中は文字列<li>をくっつけるだけ -->
+  <!-- 配列にせずにテキストで結合する。　そのあと、prependだかなんかでやる -->
