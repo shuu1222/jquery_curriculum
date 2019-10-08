@@ -53,7 +53,7 @@
 
       $("ul.menu__list").children("li").hover(
         function(){
-          $(this).children("ul").stop(true).slideDown();},
+          $("ul",this).stop(true).slideDown();},
         function(){
           $(".menu__list__childList").slideUp();
     } );

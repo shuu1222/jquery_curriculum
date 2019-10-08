@@ -96,6 +96,22 @@
   text-align: center;
 }
 
+.container .err_message:first-child:first-child{
+  display: block;
+}
+.container .err_message:nth-child(n+4){
+  display: none;
+}
+
+.container .coment:first-child{
+  display: block;
+}
+.container .coment:nth-child(n+4){
+  display: none;
+}
+
+
+
 @media screen and (max-width: 767px) {
   .lists__item {
     width: 33.33%;

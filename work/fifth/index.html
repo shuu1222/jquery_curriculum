@@ -89,7 +89,7 @@
       $(".select").change(function(){
         //change = input / select / textareaなどの要素の中身が変更された際にイベント処理を実行
         var valueSelect =$(this).val();
-        console.log(valueSelect+"が選択されました（check)");
+        // console.log(valueSelect+"が選択されました（check)");
         if(valueSelect == "all"){
           $('ul.list li').each(function(){ $(this).show() });
           // valueがallのときul(.list)の子要素のliそれぞれをshowする
@@ -113,16 +113,16 @@
       });
     });
 
-      //
-      // $(function(){
-      //   $(".select").change(function(){
-      //
-      //
-      //     let valueCheck =$(this).val();
-      //     console.log(valueCheck);
-      //     console.log("------------------");
-      //
-      //
+
+      $(function(){
+        $(".select").change(function(){
+
+
+          let valueCheck =$(this).val();
+          console.log(valueCheck);
+          console.log("------------------");
+
+
           // $('ul.list li').each(function(){
           //   var value2 =$(this).attr("category-type");
           //   if($(this).data("category-type") == valueCheck){
@@ -130,8 +130,8 @@
           //     console.log(value2);
           //   }
         // });
-      // });
-    // });
+      });
+    });
 
       // 今回やるのはソート機能です。
       // selectボックスをクリックして言語を選び、その言語と関係のあるリストだけが表示されるプログラムです。
